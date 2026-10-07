@@ -66,7 +66,6 @@ model Experience {
   skills      ExperienceSkill[]
 
   @@index([sortOrder])
-  @@index([company])
   @@map("experience")
 }
 
@@ -105,7 +104,6 @@ model Project {
   skills        ProjectSkill[]
 
   @@index([featured, sortOrder])
-  @@index([tech], type: Gin)
   @@map("project")
 }
 
