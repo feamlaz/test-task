@@ -10,7 +10,7 @@
     "start": "nest start",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
-    "start:prod": "node dist/main",
+    "start:prod": "node dist/server",
     "typecheck": "tsc --noEmit",
     "prisma:generate": "prisma generate",
     "prisma:validate": "prisma validate",
@@ -75,7 +75,7 @@
     "collectCoverageFrom": [
       "**/*.ts",
       "!**/*.module.ts",
-      "!**/main.ts",
+      "!**/server.ts",
       "!**/*-fixture.ts",
       "!**/*.e2e-fixture.ts",
       "!**/*.e2e-env.ts"

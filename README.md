@@ -56,7 +56,7 @@ with a non-zero exit status instead of starting a half-configured server.
 Migrations and seed run inside the application container rather than in a
 separate one-shot service. One container means one image and one toolchain, and
 the ordering is enforced by the process that serves traffic: it cannot reach
-`node dist/main.js` until migration and seed have exited zero. Both steps are
+`node dist/server.js` until migration and seed have exited zero. Both steps are
 idempotent, so a restart or a second `docker compose up` converges on the same
 state.
 
@@ -86,6 +86,20 @@ first migration. `.env.example` lists every variable the application reads plus
 the ones docker-compose.yml substitutes, all with the defaults used by the
 compose stack.
 
+## Deploying to Vercel
+
+Vercel starts the process from `src/server.ts`, which is the Nest bootstrap.
+`vercel.json` sets `buildCommand` to `npm run build`, so the Prisma client in
+`generated/` is produced during the build, and `framework` to null so Vercel
+applies no framework detection on top of that. `prisma/schema.prisma` lists the
+`rhel-openssl-3.0.x` binary target alongside `native`, because Vercel builds on
+Amazon Linux.
+
+Nothing migrates or seeds on Vercel. Apply `prisma migrate deploy` and
+`prisma db seed` to the target database before the first request. The variables
+in `.env.example` have to be set in the Vercel project settings by hand: the
+environment is validated at startup and the process exits if one is missing.
+
 ## Layout
 
 ```
@@ -96,6 +110,7 @@ prisma/
 docker/
   entrypoint.sh   migrate, seed, then start the server
 src/
+  server.ts      bootstrap entrypoint
   config/         environment validation
   prisma/         PrismaService and global PrismaModule
   graphql/        GraphQLModule with the Apollo driver
