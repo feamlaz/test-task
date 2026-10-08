@@ -30,6 +30,7 @@ services:
       PORT: "${API_PORT:-3000}"
       CORS_ORIGIN: "${CORS_ORIGIN:-*}"
       DATABASE_URL: "postgresql://${POSTGRES_USER:-resume}:${POSTGRES_PASSWORD:-resume}@db:5432/${POSTGRES_DB:-resume}?schema=public"
+      DIRECT_URL: "postgresql://${POSTGRES_USER:-resume}:${POSTGRES_PASSWORD:-resume}@db:5432/${POSTGRES_DB:-resume}?schema=public"
     ports:
       - "${API_PORT:-3000}:3000"
 
